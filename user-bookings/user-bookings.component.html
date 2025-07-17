@@ -1,0 +1,41 @@
+<div class="section__container">
+  <h2 class="section__header">My Bookings</h2>
+    
+  <div *ngIf="bookings.length === 0" class="no-bookings">
+    <p>No past bookings found.</p>
+  </div>
+
+  <!-- Refund message bar -->
+  <div *ngIf="refundMessage" class="refund-bar">
+    {{ refundMessage }}
+  </div>
+
+  <div class="booking-card__container" *ngIf="bookings.length > 0">
+    <div class="booking-card" *ngFor="let booking of bookings">
+      <div class="booking-card__top">
+        <h3>{{ booking.name }}</h3>
+        <br> <br>
+        <span class="flight-id">Flight ID: {{ booking.flightId }}</span>
+      </div>
+      <div class="booking-card__details">
+        <div><strong>Passenger Name:</strong> {{ booking.fullName }}</div>
+        <div><strong>Gender:</strong> {{ booking.gender }}</div>
+        <div><strong>Age:</strong> {{ booking.age }}</div>
+        <div><strong>Passenger Email:</strong> {{ booking.email }}</div>
+      </div>
+
+      <div class="booking-actions">
+<button class="checkin-btn"
+        (click)="checkIn(booking)"
+        [disabled]="isCheckedIn(booking.id)">
+  {{ isCheckedIn(booking.id) ? 'Checked In' : 'Check In' }}
+</button>
+
+        <button class="delete-btn"
+        (click)="confirmDelete(booking)">
+  Cancel Booking
+</button>
+      </div>
+    </div>
+  </div>
+</div>
