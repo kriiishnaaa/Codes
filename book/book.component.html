@@ -1,0 +1,52 @@
+<div class="section__container">
+  <h2 class="section__header">Book Your Flight</h2>
+
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="booking-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="flightCode">Flight Code:</label>
+        <input id="flightCode" type="text" formControlName="flightCode" placeholder="Enter flight code" required />
+      </div>
+
+      <div class="form-group">
+        <label for="accEmail">Your Account Email:</label>
+        <input id="accEmail" type="email" formControlName="accEmail" placeholder="Enter your email" required />
+      </div>
+    </div>
+
+    <div formArrayName="passengers" class="passenger-section">
+      <h3>Passenger Details</h3>
+
+      <div *ngFor="let passenger of passengers.controls; let i = index" [formGroupName]="i" class="passenger-card">
+        <h4>Passenger {{ i + 1 }}</h4>
+
+        <div class="form-row">
+          <input type="text" formControlName="fullName" placeholder="Full Name" required />
+          <input type="number" formControlName="age" placeholder="Age" required />
+        </div>
+
+        <div class="form-row">
+          <input type="email" formControlName="email" placeholder="Passenger Email" required />
+
+          <select formControlName="gender" required>
+            <option value="" disabled>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <button type="button" class="remove-btn" (click)="removePassenger(i)" *ngIf="passengers.length > 1">
+          Remove Passenger
+        </button>
+      </div>
+
+      <button type="button" class="add-btn" (click)="addPassenger()">+ Add Another Passenger</button>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="bookingForm.invalid" class="submit-btn">
+        Book Now
+      </button>
+    </div>
+  </form>
+</div>
