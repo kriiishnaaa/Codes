@@ -1,0 +1,87 @@
+<div class="admin-container">
+  <h1>Admin Flight Management</h1>
+
+  <form [formGroup]="flightForm" (ngSubmit)="addFlight()">
+    <div class="form-row">
+      <input type="text" formControlName="flightCode" placeholder="Flight Code (e.g. ABC1234)" />
+      <input type="text" formControlName="airline" placeholder="Airline" />
+      <input type="text" formControlName="source" placeholder="Source" />
+      <input type="text" formControlName="destination" placeholder="Destination" />
+      <p>Departure Date</p>
+      <input type="date" formControlName="departureDate" />
+      <p>Arrival Date</p>
+      <input type="date" formControlName="arrivalDate" />
+      <p>Departure Time</p>
+      <input type="time" formControlName="departureTime" />
+      <p>Arrival Time</p>
+      <input type="time" formControlName="arrivalTime" />
+      <input type="number" formControlName="baseFare" placeholder="Base Fare" />
+      <input type="number" formControlName="totalSeats" placeholder="Total Seats" />
+    </div>
+    <button type="submit" [disabled]="flightForm.invalid">Add Flight</button>
+  </form>
+
+  <hr />
+
+  <h3>All Flights</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Flight Code</th>
+        <th>Airline</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Fare</th>
+        <th>Seats Available</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of flights">
+        <td>{{ flight.flightCode }}</td>
+        <td>{{ flight.airline }}</td>
+        <td>{{ flight.source }}</td>
+        <td>{{ flight.destination }}</td>
+        <td>{{ flight.departureDate }}</td>
+        <td>{{ flight.arrivalDate }}</td>
+        <td>₹ {{ flight.baseFare }}</td>
+        <td>{{ flight.totalSeats  -  flight.acquiredSeats }}</td>
+
+       <td>
+  <button class="delete-btn" (click)="deleteFlight(flight.id)">Delete Flight</button>
+  <br><br>
+  <button class="view-btn" (click)="showAllPassengers(flight.flightCode)">View Passengers</button>
+</td>
+</tr>
+</tbody>
+</table>
+
+<div *ngIf="allBookings.length > 0">
+  <h3>Passengers for Flight: {{ selectedFlight }}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Account Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of allBookings">
+        <td>{{ booking.fullName }}</td>
+        <td>{{ booking.email }}</td>
+        <td>{{ booking.age }}</td>
+        <td>{{ booking.gender }}</td>
+        <td>{{ booking.accEmail }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3 *ngIf="allBookings.length === 0" class="no-passengers-message">
+  No bookings done yet for flight {{selectedFlight}}.
+</h3>
+</div>
