@@ -1,0 +1,31 @@
+<h1 *ngIf="flights.length === 0" class="no-flights-message">
+  No flights available from {{source}} to {{destination}} on {{date}}.
+</h1>
+<br>
+<h2 class="no-flights-message">Please try again later.</h2>
+
+<section class="section__container plan__container" *ngIf="flights.length > 0">
+  <p class="subheader">AVAILABLE FLIGHTS</p>
+  <h2 class="section__header">Search Results</h2>
+
+  <div class="flight-row" *ngFor="let flight of flights">
+    <div class="flight-detail">
+      <h3>{{ flight.airline }} ({{ flight.flightCode }})</h3>
+      <p>{{ flight.source }} → {{ flight.destination }}</p>
+    </div>
+    <div class="flight-times">
+      <p><strong>Departure:</strong> {{ flight.departureDate }} {{ flight.departureTime }}</p>
+      <p><strong>Arrival:</strong> {{ flight.arrivalDate }} {{ flight.arrivalTime }}</p>
+    </div>
+    <div class="flight-fare">
+      <p><strong>Fare:</strong> ₹{{ flight.baseFare }}</p>
+    </div>
+    <div class="flight-fare">
+      <p><strong>Seats Available</strong> {{flight.totalSeats - flight.acquiredSeats}}</p>
+    </div>
+    <div class="flight-action">
+  <button class="book-btn" (click)="bookFlight(flight)">Book Now</button>
+</div>
+
+  </div>
+</section>
