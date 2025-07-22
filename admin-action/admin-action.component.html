@@ -8,9 +8,15 @@
       <input type="text" formControlName="source" placeholder="Source" />
       <input type="text" formControlName="destination" placeholder="Destination" />
       <p>Departure Date</p>
-      <input type="date" formControlName="departureDate" />
+      <input type="date" formControlName="departureDate" [min]="today" />
+      <p *ngIf="isInvalidDate && flightForm.get('departureDate')?.touched" class="text-danger" style="font-size: 0.85rem;">
+         Departure date cannot be in the past.
+      </p>
       <p>Arrival Date</p>
-      <input type="date" formControlName="arrivalDate" />
+      <input type="date" formControlName="arrivalDate" [min]="today" />
+      <p *ngIf="isInvalidDate && flightForm.get('arrivalDate')?.touched" class="text-danger" style="font-size: 0.85rem;">
+       Arrival date cannot be in the past.
+      </p>
       <p>Departure Time</p>
       <input type="time" formControlName="departureTime" />
       <p>Arrival Time</p>

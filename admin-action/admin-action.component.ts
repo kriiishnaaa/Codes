@@ -17,6 +17,8 @@ export class AdminActionComponent implements OnInit {
   flights: any[] = [];
   allBookings: any[]=[];
   selectedFlight: string = '';
+  today: string = new Date().toISOString().split('T')[0];
+  isInvalidDate: boolean = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient, private bookingService: BookingService) {}
 
@@ -43,19 +45,37 @@ export class AdminActionComponent implements OnInit {
     });
   }
 
-  addFlight(): void {
-    const newFlight = [this.flightForm.value]; // wrap in list
-    this.http.post<any[]>('http://localhost:8081/flights/AddFlight', newFlight).subscribe({
-      next: () => {
-        alert('Flight added successfully');
-        this.flightForm.reset();
-        this.getAllFlights();
-      },
-      error: (err) => {
-        console.error('Error adding flight:', err);
-      }
-    });
+
+addFlight(): void {
+  const departureDate = this.flightForm.value.departureDate;
+  const arrivalDate = this.flightForm.value.arrivalDate;
+
+  if (arrivalDate < departureDate) {
+  alert("Arrival date can't be before departure date.");
+  return;
+}
+
+  
+  if (departureDate < this.today || arrivalDate < this.today) {
+    this.isInvalidDate = true;
+    return; // Don't proceed
   }
+
+  this.isInvalidDate = false;
+
+  const newFlight = [this.flightForm.value]; // wrap in list
+  this.http.post<any[]>('http://localhost:8081/flights/AddFlight', newFlight).subscribe({
+    next: () => {
+      alert('Flight added successfully');
+      this.flightForm.reset();
+      this.getAllFlights();
+    },
+    error: (err) => {
+      console.error('Error adding flight:', err);
+    }
+  });
+}
+
 
   deleteFlight(id: number | undefined): void {
 

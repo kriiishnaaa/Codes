@@ -1,0 +1,86 @@
+
+<nav>
+  <div class="nav__logo">BlueSky</div>
+  <ul class="nav__links">
+    <li class="link"><a routerLink="/home">Home</a></li>
+<li class="link"><a href="#about">About</a></li>
+<li class="link" *ngIf="isLoggedIn"><a routerLink="/my-bookings">My Bookings</a></li>
+<li class="link" *ngIf="isLoggedIn && isAdmin"><a routerLink="/admin-actions">Admin Actions</a></li>
+<li class="link" *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
+<li class="link" *ngIf="isLoggedIn"><a href="#" (click)="logout()">Logout</a></li>
+  </ul>
+</nav>
+
+<header class="section__container header__container">
+  <h1 class="section__header">Find And Book<br />A Great Experience</h1>
+  <img src="header.jpg" alt="header" />
+</header>
+
+<section class="section__container booking__container">
+  <form (ngSubmit)="searchFlights()">
+    <div class="form__group">
+      <span><i class="ri-map-pin-line"></i></span>
+      <div class="input__content">
+        <div class="input__group">
+          <input type="text" [(ngModel)]="destination" name="destination" required />
+          <label>Destination</label>
+        </div>
+        <p>You're going to?</p>
+      </div>
+    </div>
+    <div class="form__group">
+      <span><i class="ri-map-pin-line"></i></span>
+      <div class="input__content">
+        <div class="input__group">
+          <input type="text" [(ngModel)]="source" name="source" required />
+          <label>Source</label>
+        </div>
+        <p>You're leaving from?</p>
+      </div>
+    </div>
+    <div class="form__group">
+  <span><i class="ri-calendar-line"></i></span>
+  <div class="input__content">
+    <div class="input__group">
+      <input
+        type="date"
+        [(ngModel)]="date"
+        name="date"
+        [min]="today"
+        required
+        #dateInput="ngModel"
+      />
+      <label>Departure</label>
+    </div>
+    <p>Add date</p>
+    <div *ngIf="dateInput.invalid && dateInput.touched" class="text-danger" style="font-size: 1rem;">
+      Please select a date.
+    </div>
+    <div *ngIf="isPastDateSelected" class="text-danger" style="font-size: 0.85rem;">
+      Departure date cannot be in the past.
+    </div>
+  </div>
+  </div>
+    <button class="btn" type="submit"><i class="ri-search-line"></i></button>
+  </form>
+</section>
+
+<footer class="footer" id="about">
+  <div class="section__container footer__container">
+    <div class="footer__col">
+      <h3>BlueSky</h3>
+      <p>
+        Where Excellence Takes Flight. With a strong commitment to customer
+        satisfaction and a passion for air travel, Flivan Airlines offers
+        exceptional service and seamless journeys.
+      </p>
+      <p>
+        From friendly smiles to state-of-the-art aircraft, we connect the
+        world, ensuring safe, comfortable, and unforgettable experiences.
+      </p>
+    </div>
+  </div>
+  <div class="section__container footer__bar">
+    <p>Copyright © 2025 BlueSky Development Team. All rights reserved.</p>
+  </div>
+</footer>
