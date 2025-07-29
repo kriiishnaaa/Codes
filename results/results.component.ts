@@ -29,7 +29,7 @@ export class ResultsComponent {
       console.log('Params received:', { source:this.source, destination:this.destination, date:this.destination });
 
       if (this.source && this.destination && this.date) {
-        const url = `http://localhost:8081/flights/searchByDetails?source=${this.source}&destination=${this.destination}&date=${this.date}`;
+        const url = `http://localhost:8084/flights/searchByDetails?source=${this.source}&destination=${this.destination}&date=${this.date}`;
         console.log('Calling URL:', url);
 
         this.http.get<any[]>(url).subscribe({
@@ -58,9 +58,37 @@ export class ResultsComponent {
   this.router.navigate(['/book'], {
     queryParams: {
       flightCode: flight.flightCode,
-      accEmail: accEmail
+      accEmail: accEmail,
     }
   });
 }
+airlineLogos: { [key: string]: string } = {
+  'Indigo': 'IndiGo-Logo.png',
+  'Air India': 'air-india.png',
+  'SpiceJet': 'SpiceJet_Logo.svg.png',
+  'Air Asia': 'AirAsia_Logo.svg.png'
+};
+
+getAirlineLogo(airline: string): string {
+  return this.airlineLogos[airline] || this.airlineLogos['default'];
+}
+
+getDuration(dep: string, arr: string): string {
+  const [dh, dm] = dep.split(':').map(Number);
+  const [ah, am] = arr.split(':').map(Number);
+  let depMinutes = dh * 60 + dm;
+  let arrMinutes = ah * 60 + am;
+
+  if (arrMinutes < depMinutes) {
+    arrMinutes += 24 * 60; // handles overnight flights
+  }
+
+  const diff = arrMinutes - depMinutes;
+  const hours = Math.floor(diff / 60);
+  const minutes = diff % 60;
+
+  return `${hours}h ${minutes}m`;
+}
+
 
 }

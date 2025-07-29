@@ -1,31 +1,62 @@
-<h1 *ngIf="flights.length === 0" class="no-flights-message">
-  No flights available from {{source}} to {{destination}} on {{date}}.
-</h1>
-<br>
-<h2 class="no-flights-message">Please try again later.</h2>
+<div class="search-background-container">
+  <div class="search-content">
+    <h1 *ngIf="flights.length === 0" class="no-flights-message">
+      No flights available from {{source}} to {{destination}} on {{date}}.
+    </h1>
+    <h2 class="no-flights-message" *ngIf="flights.length === 0">Please try again later.</h2>
 
-<section class="section__container plan__container" *ngIf="flights.length > 0">
+    <section class="section__container plan__container" *ngIf="flights.length > 0">
   <p class="subheader">AVAILABLE FLIGHTS</p>
   <h2 class="section__header">Search Results</h2>
 
-  <div class="flight-row" *ngFor="let flight of flights">
-    <div class="flight-detail">
-      <h3>{{ flight.airline }} ({{ flight.flightCode }})</h3>
-      <p>{{ flight.source }} → {{ flight.destination }}</p>
+  <div class="flight-card" *ngFor="let flight of flights">
+    <div class="flight-card-header">
+      <img [src]="getAirlineLogo(flight.airline)" alt="{{ flight.airline }}" class="airline-logo-large" />
+
+      <div class="route-info">
+        <div class="airports-center">
+          <span class="airport-code">{{ flight.source }}</span>
+          <i class="ri-arrow-right-line arrow-icon-large"></i>
+          <span class="airport-code">{{ flight.destination }}</span>
+        </div>
+        <div class="duration">
+          <i class="ri-time-line"></i>
+          {{ getDuration(flight.departureTime, flight.arrivalTime) }}
+        </div>
+      </div>
     </div>
-    <div class="flight-times">
-      <p><strong>Departure:</strong> {{ flight.departureDate }} {{ flight.departureTime }}</p>
-      <p><strong>Arrival:</strong> {{ flight.arrivalDate }} {{ flight.arrivalTime }}</p>
+
+    <div class="flight-card-body fade-in flight-card-grid">
+  <div class="flight-col">
+    <div class="time-info large-text">
+      <i class="ri-plane-departure-line"></i>
+      <span><strong>Departure:</strong> {{ flight.departureTime }}</span>
     </div>
-    <div class="flight-fare">
-      <p><strong>Fare:</strong> ₹{{ flight.baseFare }}</p>
+    <div class="time-info large-text">
+      <i class="ri-plane-arrival-line"></i>
+      <span><strong>Arrival:</strong> {{ flight.arrivalTime }}</span>
     </div>
-    <div class="flight-fare">
-      <p><strong>Seats Available</strong> {{flight.totalSeats - flight.acquiredSeats}}</p>
+  </div>
+
+  <div class="flight-col">
+    <div class="fare-info large-text">
+      <i class="ri-money-rupee-circle-line"></i>
+      ₹<span class="fare-amount">{{ flight.baseFare }}</span>
     </div>
-    <div class="flight-action">
-  <button class="book-btn" (click)="bookFlight(flight)">Book Now</button>
+    <div class="seats-info large-text">
+      <i class="ri-seat-line"></i>
+      Seats Left: {{ flight.totalSeats - flight.acquiredSeats }}
+    </div>
+  </div>
+
+  <!-- Column 3: Book button -->
+  <div class="flight-col action-col">
+    <button class="book-btn pulse" (click)="bookFlight(flight)">Book Now</button>
+  </div>
 </div>
 
   </div>
 </section>
+
+  </div>
+</div>
